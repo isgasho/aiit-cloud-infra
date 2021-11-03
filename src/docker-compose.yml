@@ -9,7 +9,7 @@ services:
     env_file:
       - .env
     ports:
-      - "5434:5432"
+      - "5437:5432"
     volumes:
       - $PWD/docker/db/data:/var/lib/postgresql/data
   server:
@@ -25,4 +25,4 @@ services:
     networks:
       - default
     ports:
-      - "8080:8080"
+      - "8088:8080"
