@@ -20,5 +20,7 @@ type Instance struct {
 	Name      string
 	State     State
 	Size      int
+	Key       *Key
+	Address   *Address
 	CreatedAt time.Time
 }
