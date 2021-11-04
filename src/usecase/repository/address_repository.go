@@ -7,6 +7,7 @@ import (
 )
 
 type AddressRepository interface {
+	Store(ctx context.Context, instance *model.Address) (*model.Address, error)
 	Update(ctx context.Context, instance *model.Address) (*model.Address, error)
-	FindByInstanceID(ctx context.Context, instanceID int) (*model.Address, error)
+	FindUnassigned(ctx context.Context) (*model.Address, error)
 }

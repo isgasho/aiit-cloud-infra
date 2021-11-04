@@ -8,8 +8,7 @@ import (
 )
 
 type GetInstanceInputPort struct {
-	ID     int
-	HostID int
+	ID int
 }
 
 type GetInstanceOutputPort struct {

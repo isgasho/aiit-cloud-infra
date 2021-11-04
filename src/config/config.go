@@ -2,7 +2,6 @@ package config
 
 import "os"
 
-// Config
 var Config *config
 
 type config struct {

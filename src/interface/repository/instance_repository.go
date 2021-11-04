@@ -57,6 +57,22 @@ func (r *instanceRepository) Update(ctx context.Context, instance *model.Instanc
 	return instance, nil
 }
 
+func (r *instanceRepository) Delete(ctx context.Context, instance *model.Instance) (*model.Instance, error) {
+	query := `UPDATE instances SET state = $1 WHERE id = $2`
+	result, err := r.executor.ExecContext(ctx, query, instance.State, instance.ID)
+	if err != nil {
+		return nil, err
+	}
+	rows, err := result.RowsAffected()
+	if err != nil {
+		return nil, err
+	}
+	if rows != 1 {
+		return nil, fmt.Errorf("expected to affect 1 row, affected %d", rows)
+	}
+	return instance, nil
+}
+
 func (r *instanceRepository) FindByID(ctx context.Context, id int) (*model.Instance, error) {
 	instance := &model.Instance{}
 

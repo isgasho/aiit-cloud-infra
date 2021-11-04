@@ -17,10 +17,13 @@ type DeleteInstanceOutputPort struct {
 
 type DeleteInstanceUseCase struct {
 	instanceRepo repository.InstanceRepository
+	keyRepo      repository.KeyRepository
 }
 
-func NewDeleteInstanceUseCase(r repository.InstanceRepository) *DeleteInstanceUseCase {
-	return &DeleteInstanceUseCase{r}
+func NewDeleteInstanceUseCase(
+	ir repository.InstanceRepository,
+	kr repository.KeyRepository) *DeleteInstanceUseCase {
+	return &DeleteInstanceUseCase{ir, kr}
 }
 
 func (u *DeleteInstanceUseCase) Execute(ctx context.Context, in *DeleteInstanceInputPort) (*DeleteInstanceOutputPort, error) {
@@ -33,6 +36,9 @@ func (u *DeleteInstanceUseCase) Execute(ctx context.Context, in *DeleteInstanceI
 	if err != nil {
 		return nil, err
 	}
+
+	// TODO: Key を削除する
+	// TODO: Instance モデルの Key を nil にする
 
 	return &DeleteInstanceOutputPort{instance}, nil
 }

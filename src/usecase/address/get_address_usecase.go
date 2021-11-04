@@ -7,10 +7,6 @@ import (
 	"github.com/mi-bear/infra-control/usecase/repository"
 )
 
-type GetAddressInputPort struct {
-	InstanceID int
-}
-
 type GetAddressOutputPort struct {
 	Address *model.Address
 }
@@ -23,8 +19,8 @@ func NewGetAddressUseCase(r repository.AddressRepository) *GetAddressUseCase {
 	return &GetAddressUseCase{r}
 }
 
-func (u *GetAddressUseCase) Execute(ctx context.Context, in *GetAddressInputPort) (*GetAddressOutputPort, error) {
-	address, err := u.addressRepo.FindByInstanceID(ctx, in.InstanceID)
+func (u *GetAddressUseCase) Execute(ctx context.Context) (*GetAddressOutputPort, error) {
+	address, err := u.addressRepo.FindUnassigned(ctx)
 	if err != nil {
 		return nil, err
 	}

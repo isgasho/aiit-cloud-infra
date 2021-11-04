@@ -18,17 +18,28 @@ CREATE DATABASE "infra-control" OWNER = admin TEMPLATE = template0 ENCODING = 'U
 
 http://localhost:8088/
 
+### Host
+| API            | Method | Path                            |
+| -------------- | ------ | ------------------------------- |
+| 追加           | POST   | `/hosts`                        |
+
+### Address
+| API            | Method | Path                            |
+| -------------- | ------ | ------------------------------- |
+| 追加           | POST   | `/addresses`                    |
+
+### Instance
 | API            | Method | Path                            |
 | -------------- | ------ | ------------------------------- |
 | 追加           | POST   | `/instances`                    |
 | 取得           | GET    | `/instances/{ID}`               |
 | 終了           | DELETE | `/instances/{ID}`               |
-| すべて取得     | GET    | `/instances`                    |
-| ステータス更新 | PATCH  | `/instances/{ID}/state/{state}` |
+| すべて取得     | GET    | `/instances?host_id={ID}`       |
+| ステータス更新 | PATCH  | `/instances/{ID}/state/{STATE}` |
 
 ## Local Development
 
-### How to launch the applicaiton
+### How to launch the application
 
 ```
 $ docker-compose up --build

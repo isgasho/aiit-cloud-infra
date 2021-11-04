@@ -53,5 +53,39 @@ func (r *addressRepository) Update(ctx context.Context, address *model.Address) 
 	return address, nil
 }
 
-// TODO: Address の払出し
-// 割り当てのない Address を探して ID を返却する
+func (r *addressRepository) FindUnassigned(ctx context.Context) ([]*model.Address, error) {
+	query := `SELECT id, ip_address, mac_address FROM addresses WHERE instance_id is null order by created_at limit 1`
+
+	rows, err := r.executor.QueryContext(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	defer func(rows *sql.Rows) {
+		err := rows.Close()
+		if err != nil {
+			// TODO: Logging
+			return
+		}
+	}(rows)
+
+	addresses := make([]*model.Address, 0)
+
+	for rows.Next() {
+		address := &model.Address{}
+		if err := rows.Scan(
+			&address.ID,
+			&address.IPAddress,
+			&address.MacAddress); err != nil {
+			return nil, err
+		}
+		addresses = append(addresses, address)
+	}
+
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return addresses, nil
+}

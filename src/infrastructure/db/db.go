@@ -18,8 +18,7 @@ func NewDB() (*sql.DB, error) {
 		return nil, err
 	}
 
-	err = conn.Ping()
-	if err != nil {
+	if err := conn.Ping(); err != nil {
 		return nil, err
 	}
 	return conn, nil
