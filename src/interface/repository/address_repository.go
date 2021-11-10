@@ -30,7 +30,7 @@ func NewAddressRepository(db *sql.DB) *addressRepository {
 }
 
 func (r *addressRepository) Store(ctx context.Context, address *model.Address) (*model.Address, error) {
-	query := `INSERT INTO addresses (ip_address, mac_address) VALUES ($1, $2) RETURNING id`
+	query := `INSERT INTO "addresses" ("ip_address", "mac_address") VALUES ($1, $2) RETURNING "id"`
 	if err := r.executor.QueryRowContext(ctx, query, address.IPAddress, address.MacAddress).Scan(&address.ID); err != nil {
 		return nil, err
 	}
@@ -38,7 +38,7 @@ func (r *addressRepository) Store(ctx context.Context, address *model.Address) (
 }
 
 func (r *addressRepository) Update(ctx context.Context, address *model.Address) (*model.Address, error) {
-	query := `UPDATE addresses SET instance_id = $1 WHERE id = $2`
+	query := `UPDATE "addresses" SET "instance_id" = $1 WHERE "id" = $2`
 	result, err := r.executor.ExecContext(ctx, query, address.InstanceID, address.ID)
 	if err != nil {
 		return nil, err
@@ -54,7 +54,7 @@ func (r *addressRepository) Update(ctx context.Context, address *model.Address) 
 }
 
 func (r *addressRepository) FindUnassigned(ctx context.Context) ([]*model.Address, error) {
-	query := `SELECT id, ip_address, mac_address FROM addresses WHERE instance_id is null order by created_at limit 1`
+	query := `SELECT "id", "ip_address", "mac_address" FROM "addresses" WHERE "instance_id" is null order by "created_at" limit 1`
 
 	rows, err := r.executor.QueryContext(ctx, query)
 	if err != nil {

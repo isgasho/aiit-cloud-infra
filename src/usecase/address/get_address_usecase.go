@@ -8,16 +8,16 @@ import (
 )
 
 type GetAddressOutputPort struct {
-	Address *model.Address
+	Address []*model.Address
 }
 
 type GetAddressUseCase struct {
 	addressRepo repository.AddressRepository
 }
 
-func NewGetAddressUseCase(r repository.AddressRepository) *GetAddressUseCase {
-	return &GetAddressUseCase{r}
-}
+// func NewGetAddressUseCase(r repository.AddressRepository) *GetAddressUseCase {
+// 	return &GetAddressUseCase{r}
+// }
 
 func (u *GetAddressUseCase) Execute(ctx context.Context) (*GetAddressOutputPort, error) {
 	address, err := u.addressRepo.FindUnassigned(ctx)

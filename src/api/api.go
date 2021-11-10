@@ -24,6 +24,8 @@ func buildProjectRoutes(r *mux.Router, db *sql.DB) {
 	addressRepo := repository.NewAddressRepository(db)
 	keyRepo := repository.NewKeyRepository(db)
 
+	r.Handle("/", handler.NewHelloHandler()).Methods("GET")
+
 	// Host
 	r.Handle("/hosts", handler.NewCreateHostHandler(
 		host.NewCreateHostUseCase(hostRepo))).Methods("POST")

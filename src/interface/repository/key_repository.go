@@ -28,7 +28,7 @@ func NewKeyRepository(db *sql.DB) *keyRepository {
 }
 
 func (r *keyRepository) Store(ctx context.Context, key *model.Key) (*model.Key, error) {
-	query := `INSERT INTO keys (instance_id, data) VALUES ($1, $2) RETURNING id`
+	query := `INSERT INTO "keys" ("instance_id", "data") VALUES ($1, $2) RETURNING "id"`
 	if err := r.executor.QueryRowContext(ctx, query, key.InstanceID, key.Data).Scan(&key.ID); err != nil {
 		return nil, err
 	}

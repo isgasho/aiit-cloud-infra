@@ -28,7 +28,7 @@ func NewHostRepository(db *sql.DB) *hostRepository {
 }
 
 func (r *hostRepository) Store(ctx context.Context, host *model.Host) (*model.Host, error) {
-	query := `INSERT INTO hosts (name, limit) VALUES ($1, $2) RETURNING id`
+	query := `INSERT INTO "hosts" ("name", "limit") VALUES ($1, $2) RETURNING "id"`
 	if err := r.executor.QueryRowContext(ctx, query, host.Name, host.Limit).Scan(&host.ID); err != nil {
 		return nil, err
 	}

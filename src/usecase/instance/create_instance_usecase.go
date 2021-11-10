@@ -46,9 +46,25 @@ func (u *CreateInstanceUseCase) Execute(ctx context.Context, in *CreateInstanceI
 	}
 
 	// TODO: Key を作成する
-	// TODO: Address を払い出す
+
+	// Address を払い出す
+	addresses, err := u.addressRepo.FindUnassigned(ctx)
+	if err != nil {
+		return nil, err
+	}
+	address := &model.Address{
+		ID:         addresses[0].ID,
+		InstanceID: instance.ID,
+		IPAddress:  addresses[0].IPAddress,
+		MacAddress: addresses[0].MacAddress,
+	}
+	address, err = u.addressRepo.Update(ctx, address)
+	if err != nil {
+		return nil, err
+	}
 
 	// TODO: Instance モデルに Address と Key を設定する
+	instance.Address = address
 
 	return &CreateInstanceOutputPort{instance}, nil
 }

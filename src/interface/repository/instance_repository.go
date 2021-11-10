@@ -80,12 +80,12 @@ func (r *instanceRepository) FindByID(ctx context.Context, id int) (*model.Insta
 	query := `
 SELECT i.id, i.host_id, i.name, i.state, i.size, k.data, a.ip_address, a.mac_address
 FROM
-  instances i
+  "instances" i
     LEFT JOIN (
-      SELECT * FROM keys WHERE instance_id = $1 ORDER BY created_at desc limit 1) k ON (i.id = k.instance_id)
+      SELECT * FROM "keys" WHERE "instance_id" = $1 ORDER BY "created_at" desc limit 1) k ON (i.id = k.instance_id)
     LEFT JOIN (
-      SELECT * FROM address WHERE instance_id = $1 ORDER BY created_at desc limit 1) a ON (i.id = a.instance_id)
-WHERE id = $1
+      SELECT * FROM "address" WHERE "instance_id" = $1 ORDER BY "created_at" desc limit 1) a ON (i.id = a.instance_id)
+WHERE "id" = $1
 `
 	if err := r.executor.QueryRowContext(ctx, query, id).Scan(
 		&instance.ID,

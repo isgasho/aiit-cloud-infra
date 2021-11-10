@@ -20,9 +20,9 @@ type CreateKeyUseCase struct {
 	keyRepo repository.KeyRepository
 }
 
-func NewCreateKeyUseCase(r repository.KeyRepository) *CreateKeyUseCase {
-	return &CreateKeyUseCase{r}
-}
+// func NewCreateKeyUseCase(r repository.KeyRepository) *CreateKeyUseCase {
+// 	return &CreateKeyUseCase{r}
+// }
 
 func (u *CreateKeyUseCase) Execute(ctx context.Context, in *CreateKeyInputPort) (*CreateKeyOutputPort, error) {
 	key := &model.Key{
