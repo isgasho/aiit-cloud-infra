@@ -27,6 +27,7 @@ func NewCreateInstanceInputPortFromRequest(r *http.Request) (*instance.CreateIns
 		HostID: input.HostID,
 		Name:   input.Name,
 		Size:   input.Size,
+		Key:    nil,
 	}, nil
 }
 

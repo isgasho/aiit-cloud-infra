@@ -34,5 +34,3 @@ func (r *keyRepository) Store(ctx context.Context, key *model.Key) (*model.Key, 
 	}
 	return key, nil
 }
-
-// TODO: Key 生成

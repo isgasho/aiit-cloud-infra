@@ -11,7 +11,7 @@ type CreateInstanceInputPort struct {
 	HostID int
 	Name   string
 	Size   int
-	// Key     *model.Key
+	Key    *model.Key
 	// Address *model.Address
 }
 
@@ -45,8 +45,6 @@ func (u *CreateInstanceUseCase) Execute(ctx context.Context, in *CreateInstanceI
 		return nil, err
 	}
 
-	// TODO: Key を作成する
-
 	// Address を払い出す
 	addresses, err := u.addressRepo.FindUnassigned(ctx)
 	if err != nil {
@@ -63,8 +61,19 @@ func (u *CreateInstanceUseCase) Execute(ctx context.Context, in *CreateInstanceI
 		return nil, err
 	}
 
-	// TODO: Instance モデルに Address と Key を設定する
+	// Key を作成する (dummy)
+	key := &model.Key{
+		InstanceID: instance.ID,
+		Data:       "dummy",
+	}
+	key, err = u.keyRepo.Store(ctx, key)
+	if err != nil {
+		return nil, err
+	}
+
+	// Instance モデルに Address と Key を設定する
 	instance.Address = address
+	instance.Key = key
 
 	return &CreateInstanceOutputPort{instance}, nil
 }
