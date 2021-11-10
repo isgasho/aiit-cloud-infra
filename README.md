@@ -16,7 +16,7 @@ CREATE DATABASE "infra-control" OWNER = admin TEMPLATE = template0 ENCODING = 'U
 
 ## API
 
-http://localhost:8088/
+http://localhost:8088/api/v1/
 
 ### Host
 | API            | Method | Path                            |
@@ -49,6 +49,10 @@ $ docker-compose up --build
 
 ```
 $ docker exec -it infra-control-db psql -U admin
+```
+
+```
+$ psql -h 0.0.0.0 -p 5437 -U admin infra-control
 ```
 
 ### How to migrate
