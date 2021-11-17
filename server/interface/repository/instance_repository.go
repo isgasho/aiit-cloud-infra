@@ -76,7 +76,7 @@ func (r *instanceRepository) Delete(ctx context.Context, instance *model.Instanc
 func (r *instanceRepository) FindByID(ctx context.Context, id int) (*model.Instance, error) {
 	instance := &model.Instance{}
 
-	// TODO: address は updated_at を設けて重複した場合は、最も新しいもの (最近紐付けが行われたもの) を採用する
+	// address は updated_at を設けて重複した場合は、最も新しいもの (最近紐付けが行われたもの) を採用する
 	query := `
 SELECT i.id, i.host_id, i.name, i.state, i.size, k.data, a.ip_address, a.mac_address
 FROM
