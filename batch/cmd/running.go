@@ -12,6 +12,7 @@ var runningCmd = &cobra.Command{
 	Short: "run instance",
 	Long: `run instance`,
 	Run: func(cmd *cobra.Command, args []string) {
+		// TODO: implementation
 		fmt.Println("running called")
 	},
 }

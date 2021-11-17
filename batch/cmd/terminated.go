@@ -12,6 +12,7 @@ var terminatedCmd = &cobra.Command{
 	Short: "terminate instance",
 	Long: `terminate instance`,
 	Run: func(cmd *cobra.Command, args []string) {
+		// TODO: implementation
 		fmt.Println("terminated called")
 	},
 }

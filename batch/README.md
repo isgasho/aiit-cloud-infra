@@ -17,8 +17,10 @@ $ go run main.go create --create_host_id 5 --name sample-instance-5 --size 10240
 5. SSH Key を払い出して keys.data を更新する
 6. Instance を作る
 7. Instance の Key を配置する
-8. Private Key を渡す (メールで？)
-9. Running にする
+8. Running にする
+9. Private Key と設定情報を渡す
+   1. 鍵ファイルとテキストファイルを任意の場所に保存する
+   2. (できれば) hosts にメールアドレス項目を追加して送信する
 
 ### Terminate Instance (Pauling)
 1. Terminating の instance を取得する

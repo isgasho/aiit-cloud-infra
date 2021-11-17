@@ -12,6 +12,7 @@ var releaseCmd = &cobra.Command{
 	Short: "release addresses",
 	Long: `release addresses`,
 	Run: func(cmd *cobra.Command, args []string) {
+		// TODO: implementation
 		fmt.Println("release called")
 	},
 }
