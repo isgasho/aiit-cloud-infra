@@ -8,4 +8,5 @@ import (
 
 type KeyRepository interface {
 	Store(ctx context.Context, instance *model.Key) (*model.Key, error)
+	Delete(ctx context.Context, instanceID int) error
 }

@@ -36,9 +36,11 @@ func (u *DeleteInstanceUseCase) Execute(ctx context.Context, in *DeleteInstanceI
 	if err != nil {
 		return nil, err
 	}
-
-	// TODO: Key を削除する
-	// TODO: Instance モデルの Key を nil にする
-
+	
+	// Key を削除する (物理削除)
+	if err := u.keyRepo.Delete(ctx, in.ID); err != nil {
+		return nil, err
+	}
+	
 	return &DeleteInstanceOutputPort{instance}, nil
 }

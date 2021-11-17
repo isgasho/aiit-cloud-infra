@@ -82,9 +82,9 @@ SELECT i.id, i.host_id, i.name, i.state, i.size, k.data, a.ip_address, a.mac_add
 FROM
   "instances" i
     LEFT JOIN (
-      SELECT * FROM "keys" WHERE "instance_id" = $1 ORDER BY "created_at" desc limit 1) k ON (i.id = k.instance_id)
+      SELECT * FROM "keys" WHERE "instance_id" = $1 ORDER BY "created_at" DESC LIMIT 1) k ON (i.id = k.instance_id)
     LEFT JOIN (
-      SELECT * FROM "address" WHERE "instance_id" = $1 ORDER BY "created_at" desc limit 1) a ON (i.id = a.instance_id)
+      SELECT * FROM "address" WHERE "instance_id" = $1 ORDER BY "created_at" DESC LIMIT 1) a ON (i.id = a.instance_id)
 WHERE "id" = $1
 `
 	if err := r.executor.QueryRowContext(ctx, query, id).Scan(
@@ -101,8 +101,7 @@ WHERE "id" = $1
 }
 
 func (r *instanceRepository) FindByHostID(ctx context.Context, hostID int) ([]*model.Instance, error) {
-	// TODO: implement
-	query := ``
+	query := `SELECT "id", "host_id", "name", "state", "size" FROM "instances" FROM host_id = $1`
 
 	rows, err := r.executor.QueryContext(ctx, query, hostID)
 	if err != nil {
@@ -111,7 +110,6 @@ func (r *instanceRepository) FindByHostID(ctx context.Context, hostID int) ([]*m
 	defer func(rows *sql.Rows) {
 		err := rows.Close()
 		if err != nil {
-			// TODO: Logging
 			return
 		}
 	}(rows)

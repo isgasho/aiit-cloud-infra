@@ -34,3 +34,11 @@ func (r *keyRepository) Store(ctx context.Context, key *model.Key) (*model.Key, 
 	}
 	return key, nil
 }
+
+func (r *keyRepository) Delete(ctx context.Context, instanceID int) error {
+	query := `DELETE FROM "keys" WHERE "instance_id" = $1`
+	if err := r.executor.QueryRowContext(ctx, query, instanceID); err != nil {
+		return err.Err()
+	}
+	return nil
+}
