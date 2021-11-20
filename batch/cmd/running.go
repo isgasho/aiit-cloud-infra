@@ -35,7 +35,7 @@ var runningCmd = &cobra.Command{
 
 			fmt.Printf("private: %v\n", privateKeyFilePath)
 			fmt.Printf("public: %v\n", publicKeyFilePath)
-			fmt.Println(data)
+			fmt.Println(data) //keys.data
 
 			// TODO: keys.data を更新する
 
