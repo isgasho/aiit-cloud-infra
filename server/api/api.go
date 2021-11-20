@@ -44,5 +44,5 @@ func buildProjectRoutes(r *mux.Router, db *sql.DB) {
 	r.Handle("/instances/{id}", handler.NewDeleteInstanceHandler(
 		db, instanceRepo, keyRepo)).Methods("DELETE")
 	r.Handle("/instances", handler.NewListInstancesHandler(
-		instance.NewListInstancesUseCase(instanceRepo))).Methods("GET").Queries("host_id", "{host_id}")
+		instance.NewListInstancesUseCase(instanceRepo))).Methods("GET").Queries("state", "{state}")
 }

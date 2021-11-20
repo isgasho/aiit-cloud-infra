@@ -11,5 +11,5 @@ type InstanceRepository interface {
 	Update(ctx context.Context, instance *model.Instance) (*model.Instance, error)
 	Delete(ctx context.Context, instance *model.Instance) (*model.Instance, error)
 	FindByID(ctx context.Context, id int) (*model.Instance, error)
-	FindByHostID(ctx context.Context, hostID int) ([]*model.Instance, error)
+	FindByState(ctx context.Context, state model.State) ([]*model.Instance, error)
 }

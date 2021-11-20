@@ -81,12 +81,12 @@ func NewDeleteInstanceInputPortFromRequest(r *http.Request) (*instance.DeleteIns
 
 func NewListInstancesInputPortFromRequest(r *http.Request) (*instance.ListInstancesInputPort, error) {
 	q := r.URL.Query()
-	hostID, err := strconv.Atoi(q.Get("host_id"))
+	state, err := model.StringToState(q.Get("state"))
 	if err != nil {
 		return nil, err
 	}
 
 	return &instance.ListInstancesInputPort{
-		HostID: hostID,
+		State: state,
 	}, nil
 }

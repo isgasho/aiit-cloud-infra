@@ -8,7 +8,7 @@ import (
 )
 
 type ListInstancesInputPort struct {
-	HostID int
+	State model.State
 }
 
 type ListInstancesOutputPort struct {
@@ -26,7 +26,7 @@ func NewListInstancesUseCase(r repository.InstanceRepository) *ListInstancesUseC
 func (u *ListInstancesUseCase) Execute(ctx context.Context, in *ListInstancesInputPort) (*ListInstancesOutputPort, error) {
 	var instances []*model.Instance
 	var err error
-	instances, err = u.instanceRepo.FindByHostID(ctx, in.HostID)
+	instances, err = u.instanceRepo.FindByState(ctx, in.State)
 	if err != nil {
 		return nil, err
 	}

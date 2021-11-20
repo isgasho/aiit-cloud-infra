@@ -100,10 +100,10 @@ WHERE "id" = $1
 	return instance, nil
 }
 
-func (r *instanceRepository) FindByHostID(ctx context.Context, hostID int) ([]*model.Instance, error) {
-	query := `SELECT "id", "host_id", "name", "state", "size" FROM "instances" FROM host_id = $1`
+func (r *instanceRepository) FindByState(ctx context.Context, state model.State) ([]*model.Instance, error) {
+	query := `SELECT "id", "host_id", "name", "state", "size" FROM "instances" FROM state = $1`
 
-	rows, err := r.executor.QueryContext(ctx, query, hostID)
+	rows, err := r.executor.QueryContext(ctx, query, state)
 	if err != nil {
 		return nil, err
 	}

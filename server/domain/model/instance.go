@@ -1,6 +1,9 @@
 package model
 
-import "time"
+import (
+	"fmt"
+	"time"
+)
 
 type State int
 
@@ -21,4 +24,20 @@ type Instance struct {
 	Key       *Key
 	Address   *Address
 	CreatedAt time.Time
+}
+
+func StringToState(s string) (State, error) {
+	switch s {
+	case Starting.String():
+		return Starting, nil
+	case Initializing.String():
+		return Initializing, nil
+	case Running.String():
+		return Running, nil
+	case Terminating.String():
+		return Terminating, nil
+	case Terminated.String():
+		return Terminated, nil
+	}
+	return 0, fmt.Errorf("%v is invalid State", s)
 }
