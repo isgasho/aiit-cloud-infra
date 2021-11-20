@@ -22,7 +22,7 @@ http://localhost:8080/api/v1/
 | 取得           | GET    | `/instances/{ID}`               |
 | 終了           | DELETE | `/instances/{ID}`               |
 | すべて取得     | GET    | `/instances?state={STATE}`     |
-| ステータス更新 | PATCH  | `/instances/{ID}/state/{STATE}` |
+| ステータス更新 | PATCH  | `/instances/{ID}/stat/{STATE}` |
 
 ## Database
 

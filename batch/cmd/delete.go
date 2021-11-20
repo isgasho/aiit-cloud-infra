@@ -6,7 +6,7 @@ import (
 	"io"
 	"log"
 	"net/http"
-	
+
 	"github.com/spf13/cobra"
 )
 
@@ -16,9 +16,9 @@ var hostID int
 var deleteCmd = &cobra.Command{
 	Use:   "delete",
 	Short: "delete instance",
-	Long: `delete instance`,
+	Long:  `delete instance`,
 	Run: func(cmd *cobra.Command, args []string) {
-		res, err := instanceDeleteRequest(hostID)
+		res, err := instanceDelete(hostID)
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -28,29 +28,29 @@ var deleteCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(deleteCmd)
-	
+
 	deleteCmd.Flags().IntVarP(&hostID, "instance_id", "i", 0, "input delete instance ID")
 }
 
-func instanceDeleteRequest(id int) (interface{}, error) {
-	req, err := http.NewRequest(http.MethodDelete, fmt.Sprintf("%v/%v/%v", Endpoint, "instances", id), nil)
+func instanceDelete(id int) (interface{}, error) {
+	req, err := http.NewRequest(http.MethodDelete, fmt.Sprintf("%v/instances/%v", Endpoint, id), nil)
 	if err != nil {
 		return nil, err
 	}
-	
+
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	
+
 	defer func(Body io.ReadCloser) {
 		err := Body.Close()
 		if err != nil {
 			log.Println("file close failed")
 		}
 	}(resp.Body)
-	
+
 	var result interface{}
 	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
 		return nil, err

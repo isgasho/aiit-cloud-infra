@@ -23,6 +23,8 @@ $ go run main.go create --create_host_id 5 --name sample-instance-5 --size 10240
    2. (できれば) hosts にメールアドレス項目を追加して送信する
 
 ### Terminate Instance (Pauling)
+実際に Instance を削除し、Instance テーブルの State を更新する。
+
 1. Terminating の Instance を取得する
 2. Instance を削除する
 3. Terminated にする
@@ -35,6 +37,8 @@ $ go run main.go release
 ```
 
 ### Terminate Instance
+Database の情報を削除する。
+
 1. Instance 削除 API を Call する
 
 ```
