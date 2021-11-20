@@ -1,6 +1,9 @@
 package cmd
 
 const (
-	StateTerminating = "Terminating"
-	StateTerminated  = "Terminated"
+	StateStarting     = "Starting"
+	StateRunning      = "Running"
+	StateInitializing = "Starting"
+	StateTerminating  = "Terminating"
+	StateTerminated   = "Terminated"
 )
