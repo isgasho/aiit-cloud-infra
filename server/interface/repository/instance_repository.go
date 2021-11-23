@@ -154,7 +154,7 @@ WHERE "state" = $1
 		}
 
 		if keyID != nil {
-			key.ID = keyID.(int)
+			key.ID = int(keyID.(int64))
 		}
 		if keyData != nil {
 			key.Data = keyData.(string)
