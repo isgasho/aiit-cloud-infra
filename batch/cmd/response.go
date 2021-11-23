@@ -10,3 +10,7 @@ type InstanceResponse struct {
 	MacAddress string `json:"mac_address"`
 	Key        string `json:"key"`
 }
+
+type InstancesResponse struct {
+	Instances []InstanceResponse `json:"instances"`
+}

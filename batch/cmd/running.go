@@ -31,13 +31,19 @@ var runningCmd = &cobra.Command{
 				fmt.Println(err)
 			}
 			privateKeyFilePath, err := keys.CreatePrivateKeyFile(instanceID)
+			if err != nil {
+				fmt.Println(err)
+			}
 			publicKeyFilePath, data, err := keys.CreatePublicKeyFile(instanceID)
+			if err != nil {
+				fmt.Println(err)
+			}
 
 			fmt.Printf("private: %v\n", privateKeyFilePath)
 			fmt.Printf("public: %v\n", publicKeyFilePath)
 			fmt.Println(data) //keys.data
 
-			// TODO: keys.data を更新する
+			// TODO: Database の keys.data を更新する
 
 			// TODO: Instance を作る
 

@@ -23,11 +23,10 @@ var terminatedCmd = &cobra.Command{
 			// TODO: Instance を物理的に削除する
 
 			// Instance を Terminated にする
-			res, err := instanceStateUpdate(instanceID, StateTerminated)
+			_, err := instanceStateUpdate(instanceID, StateTerminated)
 			if err != nil {
 				fmt.Println(err)
 			}
-			fmt.Println(res)
 			fmt.Printf("Instance#%v terminated\n", instanceID)
 		}
 	},

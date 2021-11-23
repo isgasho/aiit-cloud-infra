@@ -45,20 +45,32 @@ func NewGetInstancePresenter(output *instance.GetInstanceOutputPort) *getInstanc
 	return &getInstanceResponse{mapInstanceToSimpleView(output.Instance)}
 }
 
+type minimumInstanceView struct {
+	ID    int         `json:"id"`
+	State model.State `json:"state"`
+}
+
+func mapInstanceToMinimumView(instance *model.Instance) *minimumInstanceView {
+	return &minimumInstanceView{
+		ID:    instance.ID,
+		State: instance.State,
+	}
+}
+
 type updateInstanceResponse struct {
-	Instance *simpleInstanceView `json:"instance"`
+	Instance *minimumInstanceView `json:"instance"`
 }
 
 func NewUpdateInstancePresenter(output *instance.UpdateInstanceOutputPort) *updateInstanceResponse {
-	return &updateInstanceResponse{mapInstanceToSimpleView(output.Instance)}
+	return &updateInstanceResponse{mapInstanceToMinimumView(output.Instance)}
 }
 
 type deleteInstanceResponse struct {
-	Instance *simpleInstanceView `json:"instance"`
+	Instance *minimumInstanceView `json:"instance"`
 }
 
 func NewDeleteInstancePresenter(output *instance.DeleteInstanceOutputPort) *deleteInstanceResponse {
-	return &deleteInstanceResponse{mapInstanceToSimpleView(output.Instance)}
+	return &deleteInstanceResponse{mapInstanceToMinimumView(output.Instance)}
 }
 
 type listInstanceResponse struct {

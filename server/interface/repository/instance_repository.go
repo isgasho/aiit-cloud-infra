@@ -75,33 +75,51 @@ func (r *instanceRepository) Delete(ctx context.Context, instance *model.Instanc
 
 func (r *instanceRepository) FindByID(ctx context.Context, id int) (*model.Instance, error) {
 	instance := &model.Instance{}
+	key := &model.Key{}
+	address := &model.Address{}
 
 	// address は updated_at を設けて重複した場合は、最も新しいもの (最近紐付けが行われたもの) を採用する
 	query := `
-SELECT i.id, i.host_id, i.name, i.state, i.size, k.data, a.ip_address, a.mac_address
+SELECT i.id, i.host_id, i.name, i.state, i.size, k.id, k.data, a.id, a.ip_address, a.mac_address
 FROM
   "instances" i
     LEFT JOIN (
       SELECT * FROM "keys" WHERE "instance_id" = $1 ORDER BY "created_at" DESC LIMIT 1) k ON (i.id = k.instance_id)
     LEFT JOIN (
-      SELECT * FROM "address" WHERE "instance_id" = $1 ORDER BY "created_at" DESC LIMIT 1) a ON (i.id = a.instance_id)
+      SELECT * FROM "addresses" WHERE "instance_id" = $1 ORDER BY "created_at" DESC LIMIT 1) a ON (i.id = a.instance_id)
 WHERE "id" = $1
 `
 	if err := r.executor.QueryRowContext(ctx, query, id).Scan(
 		&instance.ID,
+		&instance.HostID,
 		&instance.Name,
 		&instance.State,
 		&instance.Size,
-		&instance.Key.Data,
-		&instance.Address.IPAddress,
-		&instance.Address.MacAddress); err != nil {
+		&key.ID,
+		&key.Data,
+		&address.ID,
+		&address.IPAddress,
+		&address.MacAddress); err != nil {
 		return nil, err
 	}
+	key.InstanceID = instance.ID
+	address.InstanceID = instance.ID
+
+	instance.Key = key
+	instance.Address = address
+
 	return instance, nil
 }
 
 func (r *instanceRepository) FindByState(ctx context.Context, state model.State) ([]*model.Instance, error) {
-	query := `SELECT "id", "host_id", "name", "state", "size" FROM "instances" FROM state = $1`
+	query := `
+SELECT i.id, i.host_id, i.name, i.state, i.size, k.id, k.data, a.id, a.ip_address, a.mac_address
+FROM
+  "instances" i
+    LEFT JOIN "keys" k ON (i.id = k.instance_id)
+    LEFT JOIN "addresses" a ON (i.id = a.instance_id)
+WHERE "state" = $1
+`
 
 	rows, err := r.executor.QueryContext(ctx, query, state)
 	if err != nil {
@@ -118,16 +136,35 @@ func (r *instanceRepository) FindByState(ctx context.Context, state model.State)
 
 	for rows.Next() {
 		instance := &model.Instance{}
+		key := &model.Key{}
+		address := &model.Address{}
+		var keyID, keyData interface{}
 		if err := rows.Scan(
 			&instance.ID,
+			&instance.HostID,
 			&instance.Name,
 			&instance.State,
 			&instance.Size,
-			&instance.Key.Data,
-			&instance.Address.IPAddress,
-			&instance.Address.MacAddress); err != nil {
+			&keyID,
+			&keyData,
+			&address.ID,
+			&address.IPAddress,
+			&address.MacAddress); err != nil {
 			return nil, err
 		}
+
+		if keyID != nil {
+			key.ID = keyID.(int)
+		}
+		if keyData != nil {
+			key.Data = keyData.(string)
+		}
+
+		key.InstanceID = instance.ID
+		address.InstanceID = instance.ID
+
+		instance.Key = key
+		instance.Address = address
 		instances = append(instances, instance)
 	}
 

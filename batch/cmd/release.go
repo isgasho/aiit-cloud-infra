@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/spf13/cobra"
 )
@@ -37,5 +38,6 @@ func init() {
 
 func addressRelease(id int) (interface{}, error) {
 	// TODO: implementation
+	log.Printf("Instance#%v terminated\n", id)
 	return nil, nil
 }

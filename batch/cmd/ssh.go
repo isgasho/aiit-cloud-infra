@@ -45,13 +45,18 @@ func NewKeys() (*Keys, error) {
 }
 
 func (k *Keys) CreatePrivateKeyFile(id int) (string, error) {
-	filePath := fmt.Sprintf("/tmp/%v-private.pem", id)
+	filePath := fmt.Sprintf("/tmp/instance-%v-private.pem", id)
 	derRsaPrivateKey := x509.MarshalPKCS1PrivateKey(k.PrivateKey)
 	f, err := os.Create(filePath)
 	if err != nil {
 		return "", err
 	}
-	defer f.Close()
+	defer func(f *os.File) {
+		err := f.Close()
+		if err != nil {
+			fmt.Println("CreatePrivateKeyFile close error")
+		}
+	}(f)
 
 	if err := pem.Encode(f, &pem.Block{Type: "RSA PRIVATE KEY", Bytes: derRsaPrivateKey}); err != nil {
 		return "", err
@@ -60,13 +65,18 @@ func (k *Keys) CreatePrivateKeyFile(id int) (string, error) {
 }
 
 func (k *Keys) CreatePublicKeyFile(id int) (string, string, error) {
-	filePath := fmt.Sprintf("/tmp/%v-public.pem", id)
+	filePath := fmt.Sprintf("/tmp/instance-%v-public.pem", id)
 	derRsaPublicKey := x509.MarshalPKCS1PublicKey(k.PublicKey)
 	f, err := os.Create(filePath)
 	if err != nil {
 		return "", "", err
 	}
-	defer f.Close()
+	defer func(f *os.File) {
+		err := f.Close()
+		if err != nil {
+			fmt.Println("CreatePublicKeyFile create close error")
+		}
+	}(f)
 
 	if err := pem.Encode(f, &pem.Block{Type: "RSA PUBLIC KEY", Bytes: derRsaPublicKey}); err != nil {
 		return "", "", err
@@ -76,7 +86,12 @@ func (k *Keys) CreatePublicKeyFile(id int) (string, string, error) {
 	if err != nil {
 		return filePath, "", err
 	}
-	defer pemf.Close()
+	defer func(pemf *os.File) {
+		err := pemf.Close()
+		if err != nil {
+			fmt.Println("CreatePublicKeyFile open close error")
+		}
+	}(pemf)
 
 	bytes, err := io.ReadAll(pemf)
 	if err != nil {

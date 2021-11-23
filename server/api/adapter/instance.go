@@ -2,6 +2,7 @@ package adapter
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -50,20 +51,14 @@ func NewUpdateInstanceInputPortFromRequest(r *http.Request) (*instance.UpdateIns
 		return nil, err
 	}
 
-	// TODO: State validation
-	// 1: Starting
-	// 2: Initializing
-	// 3: Running
-	// 4: Terminating
-	// 5: Terminated
-	state, err := strconv.Atoi(vars["state"])
+	state, err := model.StringToState(vars["state"])
 	if err != nil {
 		return nil, err
 	}
 
 	return &instance.UpdateInstanceInputPort{
 		ID:    ID,
-		State: model.State(state),
+		State: state,
 	}, nil
 }
 
@@ -83,6 +78,7 @@ func NewListInstancesInputPortFromRequest(r *http.Request) (*instance.ListInstan
 	q := r.URL.Query()
 	state, err := model.StringToState(q.Get("state"))
 	if err != nil {
+		log.Println("StringToState parse error")
 		return nil, err
 	}
 

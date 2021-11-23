@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"log"
 
 	"github.com/mi-bear/infra-control/domain/model"
 
@@ -63,7 +64,7 @@ func (r *addressRepository) FindUnassigned(ctx context.Context) ([]*model.Addres
 	defer func(rows *sql.Rows) {
 		err := rows.Close()
 		if err != nil {
-			// TODO: Logging
+			log.Println("FindUnassigned query rows close failed.")
 			return
 		}
 	}(rows)

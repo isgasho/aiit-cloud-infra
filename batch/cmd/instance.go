@@ -25,22 +25,21 @@ func getInstances(state string) ([]InstanceResponse, error) {
 	}
 
 	defer func(Body io.ReadCloser) {
-		err := Body.Close()
-		if err != nil {
+		if err := Body.Close(); err != nil {
 			log.Println("file close failed")
 		}
 	}(resp.Body)
 
-	var result []InstanceResponse
+	var result InstancesResponse
+
 	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
 		return nil, err
 	}
-	return result, nil
+	return result.Instances, nil
 }
 
 func instanceStateUpdate(id int, state string) (interface{}, error) {
-	req, err := http.NewRequest(http.MethodPatch,
-		fmt.Sprintf("%v/instances/%v/state/%v", Endpoint, id, state), nil)
+	req, err := http.NewRequest(http.MethodPatch, fmt.Sprintf("%v/instances/%v/state/%v", Endpoint, id, state), nil)
 	if err != nil {
 		return nil, err
 	}
