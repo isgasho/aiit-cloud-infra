@@ -8,6 +8,7 @@ import (
 )
 
 type createAddressRequestBody struct {
+	HostID     int    `json:"host_id"`
 	IPAddress  string `json:"ip_address"`
 	MacAddress string `json:"mac_address"`
 }
@@ -19,6 +20,7 @@ func NewCreateAddressInputPortFromRequest(r *http.Request) (*address.CreateAddre
 	}
 
 	return &address.CreateAddressInputPort{
+		HostID:     input.HostID,
 		IPAddress:  input.IPAddress,
 		MacAddress: input.MacAddress,
 	}, nil

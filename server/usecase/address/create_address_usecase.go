@@ -8,6 +8,7 @@ import (
 )
 
 type CreateAddressInputPort struct {
+	HostID     int
 	IPAddress  string
 	MacAddress string
 }
@@ -26,6 +27,7 @@ func NewCreateAddressUseCase(r repository.AddressRepository) *CreateAddressUseCa
 
 func (u *CreateAddressUseCase) Execute(ctx context.Context, in *CreateAddressInputPort) (*CreateAddressOutputPort, error) {
 	address := &model.Address{
+		HostID:     in.HostID,
 		IPAddress:  in.IPAddress,
 		MacAddress: in.MacAddress,
 	}
