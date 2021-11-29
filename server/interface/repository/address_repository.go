@@ -7,7 +7,6 @@ import (
 	"log"
 
 	"github.com/mi-bear/infra-control/domain/model"
-
 	"github.com/mi-bear/infra-control/usecase/repository"
 )
 
@@ -31,8 +30,8 @@ func NewAddressRepository(db *sql.DB) *addressRepository {
 }
 
 func (r *addressRepository) Store(ctx context.Context, address *model.Address) (*model.Address, error) {
-	query := `INSERT INTO "addresses" ("ip_address", "mac_address") VALUES ($1, $2) RETURNING "id"`
-	if err := r.executor.QueryRowContext(ctx, query, address.IPAddress, address.MacAddress).Scan(&address.ID); err != nil {
+	query := `INSERT INTO "addresses" ("host_id", "ip_address", "mac_address") VALUES ($1, $2, $3) RETURNING "id"`
+	if err := r.executor.QueryRowContext(ctx, query, address.HostID, address.IPAddress, address.MacAddress).Scan(&address.ID); err != nil {
 		return nil, err
 	}
 	return address, nil
@@ -54,10 +53,10 @@ func (r *addressRepository) Update(ctx context.Context, address *model.Address) 
 	return address, nil
 }
 
-func (r *addressRepository) FindUnassigned(ctx context.Context) ([]*model.Address, error) {
-	query := `SELECT "id", "ip_address", "mac_address" FROM "addresses" WHERE "instance_id" is null order by "created_at" limit 1`
+func (r *addressRepository) FindUnassigned(ctx context.Context, hostID int) ([]*model.Address, error) {
+	query := `SELECT "id", "host_id", "ip_address", "mac_address" FROM "addresses" WHERE "instance_id" IS NULL AND "host_id" = $1 ORDER BY "created_at" LIMIT 1;`
 
-	rows, err := r.executor.QueryContext(ctx, query)
+	rows, err := r.executor.QueryContext(ctx, query, hostID)
 	if err != nil {
 		return nil, err
 	}
@@ -75,6 +74,7 @@ func (r *addressRepository) FindUnassigned(ctx context.Context) ([]*model.Addres
 		address := &model.Address{}
 		if err := rows.Scan(
 			&address.ID,
+			&address.HostID,
 			&address.IPAddress,
 			&address.MacAddress); err != nil {
 			return nil, err

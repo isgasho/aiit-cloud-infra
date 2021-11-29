@@ -36,7 +36,7 @@ func buildProjectRoutes(r *mux.Router, db *sql.DB) {
 
 	// Instance
 	r.Handle("/instances", handler.NewCreateInstanceHandler(
-		db, instanceRepo, addressRepo, keyRepo)).Methods("POST")
+		db, hostRepo, instanceRepo, addressRepo, keyRepo)).Methods("POST")
 	r.Handle("/instances/{id}", handler.NewGetInstanceHandler(
 		instance.NewGetInstanceUseCase(instanceRepo))).Methods("GET")
 	r.Handle("/instances/{id}/state/{state}", handler.NewUpdateInstanceHandler(

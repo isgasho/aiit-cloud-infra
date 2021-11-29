@@ -4,14 +4,14 @@
 1. Instance 作成 API を Call する
 
 ```
-$ go run main.go create --host_id 1 --name sample-instance-1 --size 10240
-$ go run main.go create --host_id 1 --name sample-instance-2 --size 10240
-$ go run main.go create --host_id 1 --name sample-instance-3 --size 10240
-$ go run main.go create --host_id 1 --name sample-instance-4 --size 10240
-$ go run main.go create --host_id 1 --name sample-instance-5 --size 10240
-$ go run main.go create --host_id 2 --name sample-instance-6 --size 10240
-$ go run main.go create --host_id 2 --name sample-instance-7 --size 10240
-$ go run main.go create --host_id 2 --name sample-instance-8 --size 10240
+$ go run main.go create --name sample-instance-1 --size 10240
+$ go run main.go create --name sample-instance-2 --size 10240
+$ go run main.go create --name sample-instance-3 --size 10240
+$ go run main.go create --name sample-instance-4 --size 10240
+$ go run main.go create --name sample-instance-5 --size 10240
+$ go run main.go create --name sample-instance-6 --size 10240
+$ go run main.go create --name sample-instance-7 --size 10240
+$ go run main.go create --name sample-instance-8 --size 10240
 ```
 
 ### Run Instance (Pauling)

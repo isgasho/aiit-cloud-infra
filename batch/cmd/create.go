@@ -30,7 +30,6 @@ var createCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(createCmd)
 
-	createCmd.Flags().IntVarP(&req.HostID, "host_id", "i", 0, "input create host ID")
 	createCmd.Flags().StringVarP(&req.Name, "name", "n", "", "input instance name")
 	createCmd.Flags().IntVarP(&req.Size, "size", "s", 0, "input instance size")
 }

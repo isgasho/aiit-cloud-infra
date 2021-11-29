@@ -7,6 +7,7 @@ import (
 
 type simpleAddressView struct {
 	ID         int    `json:"id"`
+	HostID     int    `json:"host_id"`
 	IPAddress  string `json:"ip_address"`
 	MacAddress string `json:"mac_address"`
 }
@@ -14,6 +15,7 @@ type simpleAddressView struct {
 func mapAddressToSimpleView(address *model.Address) *simpleAddressView {
 	return &simpleAddressView{
 		ID:         address.ID,
+		HostID:     address.HostID,
 		IPAddress:  address.IPAddress,
 		MacAddress: address.MacAddress,
 	}

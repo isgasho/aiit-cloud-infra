@@ -20,9 +20,9 @@ type UpdateAddressUseCase struct {
 	addressRepo repository.AddressRepository
 }
 
-func NewUpdateAddressUseCase(r repository.AddressRepository) *UpdateAddressUseCase {
-	return &UpdateAddressUseCase{r}
-}
+// func NewUpdateAddressUseCase(r repository.AddressRepository) *UpdateAddressUseCase {
+// 	return &UpdateAddressUseCase{r}
+// }
 
 func (u *UpdateAddressUseCase) Execute(ctx context.Context, in *UpdateAddressInputPort) (*UpdateAddressOutputPort, error) {
 	address := &model.Address{
