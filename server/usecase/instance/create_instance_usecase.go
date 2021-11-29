@@ -8,10 +8,9 @@ import (
 )
 
 type CreateInstanceInputPort struct {
-	HostID int
-	Name   string
-	Size   int
-	Key    *model.Key
+	Name string
+	Size int
+	Key  *model.Key
 	// Address *model.Address
 }
 
@@ -20,36 +19,46 @@ type CreateInstanceOutputPort struct {
 }
 
 type CreateInstanceUseCase struct {
+	hostRepo     repository.HostRepository
 	instanceRepo repository.InstanceRepository
 	addressRepo  repository.AddressRepository
 	keyRepo      repository.KeyRepository
 }
 
 func NewCreateInstanceUseCase(
+	hr repository.HostRepository,
 	ir repository.InstanceRepository,
 	ar repository.AddressRepository,
 	kr repository.KeyRepository) *CreateInstanceUseCase {
-	return &CreateInstanceUseCase{ir, ar, kr}
+	return &CreateInstanceUseCase{hr, ir, ar, kr}
 }
 
 func (u *CreateInstanceUseCase) Execute(ctx context.Context, in *CreateInstanceInputPort) (*CreateInstanceOutputPort, error) {
-	instance := &model.Instance{
-		HostID: in.HostID,
-		Name:   in.Name,
-		State:  model.Starting, // 仮想マシン起動中
-		Size:   in.Size,
-	}
-
-	instance, err := u.instanceRepo.Store(ctx, instance)
+	// Host を割り出す
+	host, err := u.hostRepo.GetAvailableHost(ctx, in.Size)
 	if err != nil {
 		return nil, err
 	}
 
 	// Address を払い出す
-	addresses, err := u.addressRepo.FindUnassigned(ctx)
+	addresses, err := u.addressRepo.FindUnassigned(ctx, host.ID)
 	if err != nil {
 		return nil, err
 	}
+
+	// Instance を追加する
+	instance := &model.Instance{
+		HostID: host.ID,
+		Name:   in.Name,
+		State:  model.Starting, // 仮想マシン起動中
+		Size:   in.Size,
+	}
+
+	instance, err = u.instanceRepo.Store(ctx, instance)
+	if err != nil {
+		return nil, err
+	}
+
 	address := &model.Address{
 		ID:         addresses[0].ID,
 		InstanceID: instance.ID,

@@ -13,9 +13,8 @@ import (
 )
 
 type createInstanceRequestBody struct {
-	HostID int    `json:"host_id"`
-	Name   string `json:"name"`
-	Size   int    `json:"size"`
+	Name string `json:"name"`
+	Size int    `json:"size"`
 }
 
 func NewCreateInstanceInputPortFromRequest(r *http.Request) (*instance.CreateInstanceInputPort, error) {
@@ -25,10 +24,9 @@ func NewCreateInstanceInputPortFromRequest(r *http.Request) (*instance.CreateIns
 	}
 
 	return &instance.CreateInstanceInputPort{
-		HostID: input.HostID,
-		Name:   input.Name,
-		Size:   input.Size,
-		Key:    nil,
+		Name: input.Name,
+		Size: input.Size,
+		Key:  nil,
 	}, nil
 }
 

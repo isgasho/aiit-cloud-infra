@@ -14,6 +14,7 @@ import (
 
 func NewCreateInstanceHandler(
 	db *sql.DB,
+	hostRepo repository.TransactionalHostRepository,
 	instanceRepo repository.TransactionalInstanceRepository,
 	addressRepo repository.TransactionalAddressRepository,
 	keyRepo repository.TransactionalKeyRepository) http.Handler {
@@ -26,6 +27,7 @@ func NewCreateInstanceHandler(
 		}
 
 		u := instance.NewCreateInstanceUseCase(
+			hostRepo.WithTx(tx),
 			instanceRepo.WithTx(tx),
 			addressRepo.WithTx(tx),
 			keyRepo.WithTx(tx),

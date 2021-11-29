@@ -1,8 +1,6 @@
 package address
 
 import (
-	"context"
-
 	"github.com/mi-bear/infra-control/domain/model"
 	"github.com/mi-bear/infra-control/usecase/repository"
 )
@@ -19,10 +17,10 @@ type GetAddressUseCase struct {
 // 	return &GetAddressUseCase{r}
 // }
 
-func (u *GetAddressUseCase) Execute(ctx context.Context) (*GetAddressOutputPort, error) {
-	address, err := u.addressRepo.FindUnassigned(ctx)
-	if err != nil {
-		return nil, err
-	}
-	return &GetAddressOutputPort{address}, nil
-}
+// func (u *GetAddressUseCase) Execute(ctx context.Context) (*GetAddressOutputPort, error) {
+// 	address, err := u.addressRepo.FindUnassigned(ctx)
+// 	if err != nil {
+// 		return nil, err
+// 	}
+// 	return &GetAddressOutputPort{address}, nil
+// }
